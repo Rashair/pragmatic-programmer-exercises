@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Turtle parser</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.0/css/bootstrap.min.css">
+    <style id="style">
+        body {
+            height: 100vh;
+        }
+
+        span {
+            display: block;
+        }
+
+        .editable {
+            border: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container h-100">
+        <div class="row">
+            <div class="col">
+                <textarea id="console" rows="8" cols="50"></textarea>
+                <div id="editable-content">
+                    <span>ff</span>
+                    <span class="editable" contenteditable="true"></span>
+                </div>
+            </div>
+            <div class="col">
+                <canvas id="canvas"> </canvas>
+            </div>
+
+        </div>
+    </div>
+    <script type="module">
+        import "https://cdn.skypack.dev/bootstrap@4.6.0";
+        import $ from "https://cdn.skypack.dev/jquery";
+
+        console.log('App started');
+
+        $(document).on('keypress', function (e) {
+            if (e.which != 13)
+                return;
+            e.preventDefault();
+
+            console.log("Enter pressed!");
+            const editable = $('.editable');
+
+            const clone = editable.clone();
+            clone.text("");
+            clone.appendTo('#editable-content')
+            clone.focus();
+
+            editable.removeClass("editable");
+            editable.attr("contenteditable", "false");
+        });
+    </script>
+</body>
+
+</html>
