@@ -1,0 +1,23 @@
+{
+  "name": "turtle-lang-parser",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Rashair/turtle-lang-parser.git"
+  },
+  "author": "Przemyslaw Wiczolek",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Rashair/turtle-lang-parser/issues"
+  },
+  "homepage": "https://github.com/Rashair/turtle-lang-parser#readme",
+  "devDependencies": {
+    "eslint": "^7.32.0"
+  }
+}
