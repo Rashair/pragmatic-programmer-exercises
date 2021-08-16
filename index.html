@@ -47,7 +47,7 @@
                 </div>
             </div>
             <div class="col">
-                <canvas id="canvas"> </canvas>
+                <canvas id="canvas" width="500" height="500"> </canvas>
             </div>
 
         </div>
@@ -61,16 +61,21 @@
     console.info("App started");
 
     const enterKeyCode = 13;
+    const parser = new Parser();
     $(document).on("keypress", function (e) {
         if (e.which != enterKeyCode)
             return;
 
         e.preventDefault();
-        console.info("Enter pressed!");
 
         const editable = $(".editable");
         appendNewEditableArea(editable.clone());
         makeAreaReadonly(editable);
+
+        const commandText = editable.text();
+        const com = parser.tryParseCommand(commandText);
+        if (com)
+            com.execute();
     });
 
     function appendNewEditableArea(oldAreaClone) {

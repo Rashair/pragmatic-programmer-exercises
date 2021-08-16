@@ -1,45 +1,48 @@
+import Drawer from "./drawer.js";
 
-
-const doTakePen = (size) => {
-  console.info(`Taking pen of size ${size}`);
+class CommandType {
+  constructor(name, action, hasArg = false) {
+    this.name = name;
+    this.action = action;
+    this.hasArg = hasArg;
+  }
 }
 
-const doLowerPen = () => {
-  console.info(`Lowering pen`);
-}
+class Command {
+  constructor(type, arg = null) {
+    this.type = type;
+    this.arg = arg;
+  }
 
-const doRaisePen = () => {
-  console.info(`Raising pen`);
+  execute() {
+    console.info(`Executing command ${this.type.name} with arg ${this.arg}`)
+    this.type.action(this.arg);
+  }
 }
-
-const doDrawWest = (lineLength) => {
-  console.info(`Drawing west for ${lineLength}`);
-}
-
-const doDrawEast = (lineLength) => {
-  console.info(`Drawing east for ${lineLength}`);
-}
-
-const doDrawSouth = (lineLength) => {
-  console.info(`Drawing south for ${lineLength}`);
-}
-
-const doDrawNorth = (lineLength) => {
-  console.info(`Drawing north for ${lineLength}`);
-}
-
 
 class Parser {
   constructor() {
+    const drawer = new Drawer();
     this.commandTypes = [
-      new CommandType("P", doTakePen, true),
-      new CommandType("D", doLowerPen,),
-      new CommandType("U", doRaisePen),
-      new CommandType("W", doDrawWest, true),
-      new CommandType("E", doDrawEast, true),
-      new CommandType("S", doDrawSouth, true),
-      new CommandType("N", doDrawNorth, true),
+      new CommandType("P", (arg) => drawer.doTakePen(arg), true),
+      new CommandType("D", () => drawer.doLowerPen,),
+      new CommandType("U", () => drawer.doRaisePen),
+      new CommandType("W", (arg) => drawer.doDrawWest(arg), true),
+      new CommandType("E", (arg) => drawer.doDrawEast(arg), true),
+      new CommandType("S", (arg) => drawer.doDrawSouth(arg), true),
+      new CommandType("N", (arg) => drawer.doDrawNorth(arg), true),
     ];
+    this.drawer = drawer;
+  }
+
+  tryParseCommand(instructionString) {
+    try {
+      return this.parseCommand(instructionString)
+    }
+    catch (e) {
+      console.log(e);
+      return null;
+    }
   }
 
   parseCommand(instructionString) {
@@ -61,22 +64,8 @@ class Parser {
   }
 
   findCommandType(commandString) {
-    return this.commandTypes.find((c) => c.name === commandString);
-  }
-}
-
-class CommandType {
-  constructor(name, action, hasArg = false) {
-    this.name = name;
-    this.action = action;
-    this.hasArg = hasArg;
-  }
-}
-
-class Command {
-  constructor(type, arg = null) {
-    this.type = type;
-    this.arg = arg;
+    const upperCaseCommand = commandString.toUpperCase();
+    return this.commandTypes.find((c) => c.name === upperCaseCommand);
   }
 }
 
