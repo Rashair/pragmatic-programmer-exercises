@@ -15,6 +15,7 @@
             "consistent"
         ],
         "no-unused-vars": "warn",
-        "prefer-template": "error"
+        "prefer-template": "error",
+        "no-undef": "error"
     }
 }

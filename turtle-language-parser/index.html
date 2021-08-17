@@ -11,7 +11,7 @@
             padding: 1em;
         }
 
-        span {
+        .console-span {
             display: block;
             padding-left: 5px;
         }
@@ -31,19 +31,21 @@
                 <p>
                     List of commands:
                 <ul>
-                    <li>P 2</li>
-                    <li>D</li>
-                    <li>U</li>
-                    <li>W 2</li>
-                    <li>S 2</li>
-                    <li>E 2</li>
-                    <li>N 2</li>
+                    <li>P X - take pen of size X</li>
+                    <li>D - lower the pen</li>
+                    <li>U - raise the pen</li>
+                    <li>W X - draw west for X units</li>
+                    <li>S X - draw south for X units</li>
+                    <li>E X - draw east for X units</li>
+                    <li>N X - draw north for X units</li>
                 </ul>
                 </p>
+                <p>Current pen size: <b id="penSize">0</b></p>
+                <p>Is pen down? <b id="penDown">No</b></p>
             </div>
             <div class="col-3 pt-2">
                 <div id="editable-content">
-                    <span class="editable" contenteditable="true"></span>
+                    <span class="editable console-span" contenteditable="true"></span>
                 </div>
             </div>
             <div class="col">
@@ -57,11 +59,13 @@
     import "https://cdn.skypack.dev/bootstrap@5.1.0";
     import $ from "https://cdn.skypack.dev/jquery";
     import Parser from "./parser.js"
+    import Drawer from "./drawer.js"
 
     console.info("App started");
 
     const enterKeyCode = 13;
-    const parser = new Parser();
+    const drawer = new Drawer();
+    const parser = new Parser(drawer);
     $(document).on("keypress", function (e) {
         if (e.which != enterKeyCode)
             return;
@@ -74,9 +78,24 @@
 
         const commandText = editable.text();
         const com = parser.tryParseCommand(commandText);
-        if (com)
-            com.execute();
+        if (!com)
+            return;
+
+        com.execute();
+
+        if (drawer.size !== this.penSize) {
+            this.penSize = drawer.size;
+            $('#penSize').text(this.penSize);
+        }
+
+        if (drawer.penDown !== this.penDown) {
+            this.penDown = drawer.penDown;
+            $('#penDown').text(this.penDown === true ? "Yes" : "No");
+        }
     });
+
+    const editable = $(".editable");
+    editable.focus();
 
     function appendNewEditableArea(oldAreaClone) {
         oldAreaClone.text("");

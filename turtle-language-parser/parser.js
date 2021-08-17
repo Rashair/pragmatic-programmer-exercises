@@ -1,4 +1,3 @@
-import Drawer from "./drawer.js";
 
 class CommandType {
   constructor(name, action, hasArg = false) {
@@ -21,12 +20,11 @@ class Command {
 }
 
 class Parser {
-  constructor() {
-    const drawer = new Drawer();
+  constructor(drawer) {
     this.commandTypes = [
       new CommandType("P", (arg) => drawer.doTakePen(arg), true),
-      new CommandType("D", () => drawer.doLowerPen,),
-      new CommandType("U", () => drawer.doRaisePen),
+      new CommandType("D", () => drawer.doLowerPen()),
+      new CommandType("U", () => drawer.doRaisePen()),
       new CommandType("W", (arg) => drawer.doDrawWest(arg), true),
       new CommandType("E", (arg) => drawer.doDrawEast(arg), true),
       new CommandType("S", (arg) => drawer.doDrawSouth(arg), true),
@@ -60,7 +58,8 @@ class Parser {
     if (commandAndArg.length < 2)
       throw new Error(`Missing argument for command: ${commandAndArg[0]}`);
 
-    return new Command(type, commandAndArg[1]);
+    const arg = parseInt(commandAndArg[1]);
+    return new Command(type, arg);
   }
 
   findCommandType(commandString) {
