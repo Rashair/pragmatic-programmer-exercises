@@ -1,5 +1,5 @@
-time = hour:hour12 ":" min:minute periodOffset:period_abbr { return hour * 60 + periodOffset + min; }
-     / hour:hour12 periodOffset:period_abbr                { return hour * 60  + periodMult; }
+time = hour:hour12 ":" min:minute periodOffset:period_abbr { return (hour + periodOffset) * 60 + min; }
+     / hour:hour12 periodOffset:period_abbr                { return (hour + periodOffset) * 60; }
      / hour:hour24 ":" min:minute                          { return hour * 60 + min; }
 hour12 = "1" dig:[0-2]   { return 10 + parseInt(dig); }
        / "0" dig:digit   { return dig; }
@@ -10,4 +10,4 @@ hour24 = "2" dig:[0-3]            { return 20 + parseInt(dig); }
 minute = tenDigit:[0-5] dig:digit { return 10*tenDigit + dig; }
 digit  = dig:[0-9]                { return parseInt(dig); }
 period_abbr = "am" { return 0; } 
-            / "pm" { return 12*60; } 
+            / "pm" { return 12; } 
