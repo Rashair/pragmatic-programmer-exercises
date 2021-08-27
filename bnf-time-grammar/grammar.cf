@@ -1,5 +1,5 @@
 <time> ::=  <hour12> ":" <minute> <period_abbr> 
-			| <hour24> ":" <minute>
+            | <hour24> ":" <minute>
             | <hour12> <period_abbr>
 <hour12> ::= ("1" [0-2]) | ("0" <digit>)   | <digit>
 <hour24> ::= ("2" [0-3]) | ([0-1] <digit>) | <digit> 
