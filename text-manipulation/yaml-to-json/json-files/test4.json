@@ -1,6 +1,0 @@
-{
-    "test": "Simple Alias Example",
-    "brief": "If you need to refer to the same item of data twice, you can give that item an alias.  The alias is a plain string, starting with an ampersand.  The item may then be referred to by the alias throughout your document by using an asterisk before the name of the alias. This is called an anchor.\n",
-    "yaml": "- &showell Steve\n- Clark\n- Brian\n- Oren\n- *showell\n",
-    "php": "['Steve', 'Clark', 'Brian', 'Oren', 'Steve']\n"
-}
