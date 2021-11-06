@@ -1,22 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace StateMachine
 {
-    class StateMachine
+    public class StringReaderFSM
     {
-        private readonly List<string> strings;
+        private List<string> strings;
         private State _currentState;
         private StringBuilder currentStringBuilder;
 
-        public StateMachine()
+        public StringReaderFSM()
         {
-            strings = new();
-            _currentState = State.OUTSIDE_STRING;
+            Clear();
         }
 
         public List<string> Execute(StreamReader reader)
@@ -27,6 +24,12 @@ namespace StateMachine
                 Process(c);
             }
             return strings;
+        }
+
+        public void Clear()
+        {
+            strings = new();
+            _currentState = State.OUTSIDE_STRING;
         }
 
         private void Process(char c)
@@ -56,13 +59,14 @@ namespace StateMachine
 
         public State StringStart(char c)
         {
+            currentStringBuilder = new();
             switch (c)
             {
                 case '"':
                     return State.STRING_END;
 
                 default:
-                    currentStringBuilder = new(c.ToString());
+                    currentStringBuilder.Append(c);
                     return State.IN_STRING;
             }
         }
@@ -90,17 +94,8 @@ namespace StateMachine
                     return State.STRING_START;
 
                 default:
-                    currentStringBuilder = new();
                     return State.OUTSIDE_STRING;
             }
         }
-    }
-
-    internal enum State
-    {
-        OUTSIDE_STRING,
-        STRING_START,
-        IN_STRING,
-        STRING_END,
     }
 }
